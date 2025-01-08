@@ -1,0 +1,10 @@
+{
+    "name": "Simple Notes Extension",
+    "description": "Simple extension designed to help you capture your thoughts, ideas, and tasks instantly.",
+    "version": "1.0",
+    "manifest_version": 3,
+    "action": {
+      "default_popup": "popup/popup.html",
+      "default_icon": "images/note-icon.png"
+    }
+  }
