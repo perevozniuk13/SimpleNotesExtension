@@ -11,10 +11,26 @@ body {
     align-items: center;
 }
 
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.buttons-conatiner {
+    display: flex;
+    justify-content: center;
+}
+
+button {
+    /* width: 20px; */
+}
+
 h1 {
     padding: 0;
     margin: 0;
-    margin-bottom: 5px;
 }
 
 #note {
