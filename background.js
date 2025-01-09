@@ -1,9 +1,11 @@
-let notesOn = false;
 let previousTabId = null;
 
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.storage.local.set({ notesOn: false });
+});
+
 chrome.action.onClicked.addListener(async () => {
-  notesOn = true;
-  console.log('Extension clicked, notesOn set to:', notesOn);
+  chrome.storage.local.set({ notesOn: true });
 
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     console.log('Injecting note script in tab:', tabs[0].id);
@@ -16,9 +18,10 @@ chrome.action.onClicked.addListener(async () => {
 
 chrome.tabs.onActivated.addListener((activeInfo) => {
   console.log('Tab activated:', activeInfo);
-  console.log('notesOn state:', notesOn);
 
-  if (notesOn) {
+  chrome.storage.local.get('notesOn', (data) => {
+    if (data.notesOn) {
+
     if (previousTabId !== null) {
       console.log('Removing note from previous tab:', previousTabId);
       chrome.scripting.executeScript({
@@ -36,14 +39,15 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 
     previousTabId = activeInfo.tabId;
   }
+})
 });
 
 
 function removeNote() {
-  const note = document.getElementById('draggable-note');
-  if (note) {
+  const container = document.getElementById('note-container');
+  if (container) {
     console.log("content removed")
-    note.remove();
+    container.remove();
   }
 }
   
