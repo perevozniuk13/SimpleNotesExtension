@@ -16,6 +16,8 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
     let note = document.getElementById("note");
     if (container) {
       note.value = changes.note.newValue;
+      container.style.top = data.notePosition.top || '20px';
+      container.style.left = data.notePosition.left || `${window.innerWidth-380}px`;
     }
   }
 });
@@ -24,14 +26,22 @@ function createAndInjectNoteOnPage(noteText) {
   const container = document.createElement("div");
   container.id = "note-container";
   container.style.position = "fixed";
-  container.style.top = "20px";
-  container.style.left = "20px";
-  container.style.zIndex = "9999";
+  container.style.zIndex = "999999";
   container.style.width = "320px";
   container.style.borderRadius = "8px";
   container.style.backgroundColor = "black";
   container.style.boxShadow = "0px 0px 10px rgba(0, 0, 0, 0.2)";
   container.style.padding = "10px";
+
+  chrome.storage.local.get('notePosition', (data) => {
+    if (data.notePosition) {
+      container.style.top = data.notePosition.top || '20px';
+      container.style.left = data.notePosition.left || `${window.innerWidth-380}px`;
+    } else {
+      container.style.top = '20px';
+      container.style.left = `${window.innerWidth-380}px`;
+    }
+  });
 
   const headerContainer = document.createElement("div");
   headerContainer.id = "header-container";
@@ -68,7 +78,6 @@ function createAndInjectNoteOnPage(noteText) {
   note.placeholder = "Write your note...";
   note.style.width = "300px";
   note.style.height = "200px";
-  note.style.zIndex = "9999";
   note.style.borderRadius = "8px";
   note.style.padding = "10px";
   note.style.fontSize = "14px";
@@ -101,6 +110,12 @@ function createAndInjectNoteOnPage(noteText) {
 
   closeButton.onclick = function () {
     chrome.storage.local.set({ notesOn: false });
+    chrome.storage.local.set({
+      notePosition: {
+        top: '20px',
+        left: `${window.innerWidth-380}px`,
+      },
+    });
     container.remove();
   };
 }
@@ -117,6 +132,13 @@ function makeDraggable(element) {
     document.addEventListener("mouseup", () => {
       isDragging = false;
       document.removeEventListener("mousemove", dragElement);
+
+      chrome.storage.local.set({
+        notePosition: {
+          top: element.style.top,
+          left: element.style.left,
+        },
+      });
     });
   });
 
