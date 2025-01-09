@@ -1,3 +1,5 @@
+console.log('content.js injected!');
+
 chrome.storage.local.get('note', (data) => {
   if (data.note) {
     let note = document.getElementById('draggable-note');

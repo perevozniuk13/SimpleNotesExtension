@@ -28,11 +28,6 @@
 
 // })
 document.getElementById('open-notes-btn').addEventListener('click', () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      chrome.scripting.executeScript({
-        target: { tabId: tabs[0].id },
-        func: injectNote,
-      });
-    });
-  });
+  chrome.runtime.sendMessage({ action: 'open_notes' });
+});
   
