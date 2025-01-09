@@ -42,6 +42,20 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 })
 });
 
+chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
+
+  chrome.storage.local.get('notesOn', (data) => {
+
+    if (data.notesOn && changeInfo.status === 'complete') {
+
+    chrome.scripting.executeScript({
+      target: { tabId: tabId },
+      files: ['content.js'],
+    });
+
+  }})
+});
+
 
 function removeNote() {
   const container = document.getElementById('note-container');

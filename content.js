@@ -144,8 +144,23 @@ function makeDraggable(element) {
 
   function dragElement(e) {
     if (isDragging) {
-      element.style.left = `${e.clientX - offsetX}px`;
-      element.style.top = `${e.clientY - offsetY}px`;
+      let newTop = e.clientY - offsetY;
+      let newLeft = e.clientX - offsetX;
+
+      if (newTop < 0) {
+        newTop = 0;
+      } else if (newTop > (window.innerHeight - 240)) {
+        newTop = window.innerHeight - 240;
+      }
+
+      if (newLeft < 0) {
+        newLeft = 0;
+      } else if (newLeft > (window.innerWidth - 330)) {
+        newLeft = window.innerWidth - 330;
+      }
+    
+      element.style.left = `${newLeft}px`;
+      element.style.top = `${newTop}px`;
     }
   }
 }
