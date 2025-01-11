@@ -4,11 +4,11 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.local.set({ notesOn: false });
 });
 
+// listen for when the extension icon is clicked, toggle the notesOn status and injecting the note script
 chrome.action.onClicked.addListener(async () => {
   chrome.storage.local.set({ notesOn: true });
 
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    console.log('Injecting note script in tab:', tabs[0].id);
     chrome.scripting.executeScript({
       target: { tabId: tabs[0].id },
       files: ['content.js'],
@@ -16,14 +16,14 @@ chrome.action.onClicked.addListener(async () => {
   });
 });
 
+// when switching to a new tab, inject the note to that tab
 chrome.tabs.onActivated.addListener((activeInfo) => {
-  console.log('Tab activated:', activeInfo);
 
   chrome.storage.local.get('notesOn', (data) => {
     if (data.notesOn) {
 
+    // remove note code from the previous tab when switching to a new one
     if (previousTabId !== null) {
-      console.log('Removing note from previous tab:', previousTabId);
       chrome.scripting.executeScript({
         target: { tabId: previousTabId },
         func: removeNote, 
@@ -31,7 +31,6 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
     }
 
 
-    console.log('Injecting note script into tab:', activeInfo.tabId);
     chrome.scripting.executeScript({
       target: { tabId: activeInfo.tabId },
       files: ['content.js'],
@@ -42,6 +41,7 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 })
 });
 
+// when tab is rephreshed, inject the note again
 chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
 
   chrome.storage.local.get('notesOn', (data) => {
@@ -64,7 +64,6 @@ function removeNote() {
       style.remove();
   }
   if (container) {
-    console.log("content removed")
     container.remove();
   }
 }

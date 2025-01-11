@@ -1,3 +1,4 @@
+// get the note from chrome.storage and either create a new note or update the existing one
 chrome.storage.local.get("note", (data) => {
   let container = document.getElementById("note-container");
   let note = document.getElementById("note");
@@ -8,6 +9,7 @@ chrome.storage.local.get("note", (data) => {
   }
 });
 
+// listen for changes in the stored note and update the note on the page if it changes
 chrome.storage.onChanged.addListener((changes, areaName) => {
   if (areaName === "local" && changes.note) {
     let container = document.getElementById("note-container");
@@ -20,12 +22,14 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
   }
 });
 
+// create and inject all html elements
 function createAndInjectNoteOnPage(noteText) {
-  injectCSS();
+  injectCSS(); // inject CSS from styles.css
 
   const container = document.createElement("div");
   container.id = "note-container";
 
+  // get note position from storage and apply it to the container's position
   chrome.storage.local.get('notePosition', (data) => {
     if (data.notePosition) {
       container.style.top = data.notePosition.top || '20px';
@@ -103,6 +107,7 @@ function createAndInjectNoteOnPage(noteText) {
   };
 }
 
+// 
 function makeDraggable(element) {
   let isDragging = false;
   let offsetX, offsetY;
@@ -130,6 +135,7 @@ function makeDraggable(element) {
       let newTop = e.clientY - offsetY;
       let newLeft = e.clientX - offsetX;
 
+      // prevent dragging out of the viewport
       if (newTop < 0) {
         newTop = 0;
       } else if (newTop > (window.innerHeight - 240)) {
