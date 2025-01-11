@@ -1,5 +1,3 @@
-console.log("content.js injected!");
-
 chrome.storage.local.get("note", (data) => {
   let container = document.getElementById("note-container");
   let note = document.getElementById("note");
@@ -23,15 +21,10 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
 });
 
 function createAndInjectNoteOnPage(noteText) {
+  injectCSS();
+
   const container = document.createElement("div");
   container.id = "note-container";
-  container.style.position = "fixed";
-  container.style.zIndex = "999999";
-  container.style.width = "320px";
-  container.style.borderRadius = "8px";
-  container.style.backgroundColor = "black";
-  container.style.boxShadow = "0px 0px 10px rgba(0, 0, 0, 0.2)";
-  container.style.padding = "10px";
 
   chrome.storage.local.get('notePosition', (data) => {
     if (data.notePosition) {
@@ -45,42 +38,30 @@ function createAndInjectNoteOnPage(noteText) {
 
   const headerContainer = document.createElement("div");
   headerContainer.id = "header-container";
-  headerContainer.style.width = "100%";
-  headerContainer.style.display = "flex";
-  headerContainer.style.justifyContent = "space-between";
-  headerContainer.style.alignItems = "center";
 
   const buttonsContainer = document.createElement("div");
   buttonsContainer.id = "buttons-container";
-  buttonsContainer.style.display = "flex";
 
   const clearButton = document.createElement("button");
   clearButton.id = "button-clear";
-  clearButton.innerText = "Clear";
-
+  clearButton.title = "Clear";
+  
   const closeButton = document.createElement("button");
   closeButton.id = "button-close";
-  closeButton.innerText = "Close";
-
+  closeButton.title = "Close";
+  
   const copyButton = document.createElement("button");
   copyButton.id = "button-copy";
-  copyButton.innerText = "Copy";
+  copyButton.title = "Copy";
+  
 
   const title = document.createElement("h1");
-  title.innerText = "My Note";
-  title.style.fontSize = "18px";
-  title.style.margin = "0 0 10px 0";
-  title.style.fontWeight = "normal";
-  title.style.color = "white";
+  title.id = "note-title"
+  title.innerText = "Simple Notes";
 
   const note = document.createElement("textarea");
   note.id = "note";
   note.placeholder = "Write your note...";
-  note.style.width = "300px";
-  note.style.height = "200px";
-  note.style.borderRadius = "8px";
-  note.style.padding = "10px";
-  note.style.fontSize = "14px";
   note.value = noteText || "";
 
   buttonsContainer.appendChild(copyButton);
@@ -93,6 +74,8 @@ function createAndInjectNoteOnPage(noteText) {
   container.appendChild(headerContainer);
   container.appendChild(note);
   document.body.appendChild(container);
+  injectCSS();
+
 
   makeDraggable(container);
 
@@ -162,5 +145,15 @@ function makeDraggable(element) {
       element.style.left = `${newLeft}px`;
       element.style.top = `${newTop}px`;
     }
+  }
+}
+
+function injectCSS() {
+  if (!document.getElementById('simpleNotesStyles')) {
+      const link = document.createElement('link');
+      link.id = 'simpleNotesStyles';
+      link.rel = 'stylesheet';
+      link.href = chrome.runtime.getURL('styles.css');
+      document.head.appendChild(link);
   }
 }

@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Manrope:wght@200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+  
+#note-container {
+  font-family: "Montserrat", serif !important;
+  position: fixed !important;
+  z-index: 99999 !important;
+  border-radius: 8px !important;
+  background-color: rgb(252, 245, 195) !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2) !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+#header-container {
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center !important;
+  padding: 10px !important;
+}
+
+#buttons-container {
+  display: flex !important;
+}
+
+#button-clear, 
+#button-close,
+#button-copy {
+  border: none !important;
+  margin-left: 15px !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  width: 20px !important;
+  height: 20px !important;
+  background-color: rgb(252, 245, 195)  !important;
+}
+
+#button-clear {
+  background-image: url("./images/icons8-clear-50.png");
+}
+
+#button-copy {
+  background-image: url("./images/icons8-copy-50.png");
+}
+
+#button-close {
+  background-image: url("./images/icons8-close-50.png");
+}
+
+#note {
+  all: unset !important;
+  font-family: "Montserrat", serif !important;
+  width: 320px !important;
+  height: 200px !important;
+  padding: 10px !important;
+  font-size: 16px !important;
+  background-color: rgb(255, 250, 235) !important;
+  margin: 0 !important;
+}
+
+#note-title {
+  font-family: "Montserrat", serif !important;
+  font-size: 20px !important;
+  font-weight: 500 !important;
+  color: rgb(0, 0, 0) !important;
+  margin: 0 !important;
+}

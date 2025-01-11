@@ -15,5 +15,14 @@
     "service_worker": "background.js",
     "type": "module"
   },
-  "host_permissions": ["<all_urls>"]
+  "host_permissions": ["<all_urls>"],
+  "web_accessible_resources": [
+        {
+            "resources": ["styles.css", "images/icons8-clear-50.png", "images/icons8-copy-50.png", "images/icons8-close-50.png", "images/note-icon.png"],
+            "matches": ["<all_urls>"]
+        }
+    ],
+  "content_security_policy": {
+  "extension_pages": "script-src 'self'; object-src 'self'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com;"
+  }
   }

@@ -59,6 +59,10 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
 
 function removeNote() {
   const container = document.getElementById('note-container');
+  const style = document.getElementById('simpleNotesStyles');
+  if (style) {
+      style.remove();
+  }
   if (container) {
     console.log("content removed")
     container.remove();
